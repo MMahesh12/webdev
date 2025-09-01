@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <head>
+      <title>Update</title>
+    </head>
+    <h2>Update User</h2>
+
+    <input
+      type="text"
+      id="updateEmail"
+      placeholder="Email to Update"
+    /><br /><br />
+    <input
+      type="text"
+      id="updateName"
+      placeholder="New Full Name"
+    /><br /><br />
+    <button onclick="updateUser()">Update</button>
+
+    <script>
+      function updateUser() {
+        const email = document.getElementById("updateEmail").value.trim();
+        const newFullName = document.getElementById("updateName").value.trim();
+
+        if (!email || !newFullName) {
+          alert("Please enter both email and full name.");
+          return;
+        }
+
+        fetch(`http://localhost:5000/update/${encodeURIComponent(email)}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ fullName: newFullName }),
+        })
+          .then((res) => res.text())
+          .then((response) => alert(response))
+          .catch((err) => {
+            console.error(err);
+            alert("Failed to connect to server.");
+          });
+      }
+    </script>
+  </body>
+</html>
